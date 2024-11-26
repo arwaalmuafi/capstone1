@@ -103,7 +103,38 @@ public class UserService {
         return null;
     }
 
-    //5
+//1
+      public boolean transferBalance(String fromUserId, String toUserId, double amount) {
+        if (amount <= 0) {
+            return false;
+        }
+
+        User sender = null;
+        User receiver = null;
+
+        for (User user : users) {
+            if (user.getId().equals(fromUserId)) {
+                sender = user;
+            }
+            if (user.getId().equals(toUserId)) {
+                receiver = user;
+            }
+        }
+
+        if (sender == null || receiver == null) {
+            return false;
+        }
+
+        if (sender.getBalance() < amount) {
+            return false;
+        }
+
+
+        sender.setBalance(sender.getBalance() - amount);
+        receiver.setBalance(receiver.getBalance() + amount);
+
+        return true;
+    }
 
 
 
