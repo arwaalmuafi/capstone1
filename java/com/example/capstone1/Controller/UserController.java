@@ -71,6 +71,19 @@ public class UserController {
         return ResponseEntity.status(400).body("Purchase failed.");
     }
 
+      @PostMapping("/transfer/{fromUserId}/{toUserId}/{amount}")
+    public ResponseEntity<String> transferBalance(
+            @PathVariable String fromUserId,
+            @PathVariable String toUserId,
+            @PathVariable double amount) {
+        boolean success = userService.transferBalance(fromUserId, toUserId, amount);
+        if (success) {
+            return ResponseEntity.ok("Balance transferred successfully!");
+        } else {
+            return ResponseEntity.badRequest().body("Transfer failed! Check user IDs or balance.");
+        }
+    }
+
 
 
 
