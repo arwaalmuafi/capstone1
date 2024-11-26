@@ -71,6 +71,7 @@ public class UserController {
         return ResponseEntity.status(400).body("Purchase failed.");
     }
 
+    //2
       @PostMapping("/transfer/{fromUserId}/{toUserId}/{amount}")
     public ResponseEntity<String> transferBalance(
             @PathVariable String fromUserId,
@@ -85,7 +86,25 @@ public class UserController {
     }
 
 
+    //1
+    @PostMapping("/wishlist/add"/{userId})
+    public ResponseEntity addToWishlist(
+            @PathVariable String userId,
+            @RequestParam String productId) {
+        boolean success = userService.addToWishlist(userId, productId);
+        if (success) {
+            return ResponseEntity.status(200).body(new ApiReasponse("Product added to wishlist!"));
+        } else {
+            return ResponseEntity.status(400).body(new ApiReasponse("Failed to add product to wishlist. Check user or product ID."));
+        }
+    }
 
+    //1
+    @GetMapping("/wishlist/{userId}")
+    public ResponseEntity<List<Product>> getWishlist(@PathVariable String userId) {
+        List<Product> wishlist = userService.getWishlist(userId);
+        return ResponseEntity.status(200).body(wishlist);
+    }
 
 
 
