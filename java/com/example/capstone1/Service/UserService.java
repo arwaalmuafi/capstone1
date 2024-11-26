@@ -103,8 +103,8 @@ public class UserService {
         return null;
     }
 
-//1
-      public boolean transferBalance(String fromUserId, String toUserId, double amount) {
+//2
+    public boolean transferBalance(String fromUserId, String toUserId, double amount) {
         if (amount <= 0) {
             return false;
         }
@@ -136,7 +136,45 @@ public class UserService {
         return true;
     }
 
+    //1
+    public boolean addToWishlist(String userId, String productId) {
+        User user = getUserById(userId);
+        if (user == null) {
+            return false;
+        }
 
+
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return false;
+        }
+
+
+        if (!user.getWishlist().contains(productId)) {
+            user.getWishlist().add(productId);
+            return true;
+        }
+
+        return false;
+    }
+
+    //1
+    public ArrayList<Product> getWishlist(String userId) {
+        User user = getUserById(userId);
+        if (user == null) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<Product> wishlistProducts = new ArrayList<>();
+        for (String productId : user.getWishlist()) {
+            Product product = productService.getProductById(productId);
+            if (product != null) {
+                wishlistProducts.add(product);
+            }
+        }
+
+        return wishlistProducts;
+    }
 
 
 
