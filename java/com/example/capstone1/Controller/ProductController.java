@@ -91,7 +91,7 @@ public class ProductController {
     }
 
     //3
-      @GetMapping("/discount/{merchantID}/{productID}/{discountPercentage}")
+      @PutMapping("/discount/{merchantID}/{productID}/{discountPercentage}")
     public ResponseEntity<String> applyDiscount(@PathVariable String merchantID,
                                                 @PathVariable String productID,
                                                 @PathVariable double discountPercentage) {
