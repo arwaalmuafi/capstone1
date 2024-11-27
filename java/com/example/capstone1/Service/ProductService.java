@@ -1,42 +1,49 @@
 package com.example.capstone1.Service;
 
+import com.example.capstone1.Model.MerchantStock;
 import com.example.capstone1.Model.Product;
 import com.example.capstone1.Model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
-         ArrayList<Product> products = new ArrayList<>();
+    private final MerchantStockService merchantStockService;
+    private final UserService userService;
 
-        public ArrayList<Product> getProducts() {
-            return products;
-        }
 
-        public void addProduct(Product product) {
-            products.add(product);
-        }
+    ArrayList<Product> products = new ArrayList<>();
 
-        public boolean updateProduct(Product product, String id) {
-            for (int i = 0; i < products.size(); i++) {
-                if (products.get(i).getId().equals(id)) {
-                    products.set(i, product);
-                    return true;
-                }
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public boolean updateProduct(Product product, String id) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(id)) {
+                products.set(i, product);
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
-        public boolean deleteProduct(String id) {
-            for (int i = 0; i < products.size(); i++) {
-                if (products.get(i).getId().equals(id)) {
-                    products.remove(i);
-                    return true;
-                }
+    public boolean deleteProduct(String id) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(id)) {
+                products.remove(i);
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
 
     public Product getProductById(String id) {
@@ -49,11 +56,9 @@ public class ProductService {
     }
 
 
-
-
-    public Product searchById(Product product,String id){
-        for (int i = 0; i <products.size() ; i++) {
-            if(products.get(i).getId().equals(id)){
+    public Product searchById(Product product, String id) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(id)) {
                 return product;
             }
 
@@ -86,7 +91,6 @@ public class ProductService {
     }
 
 
-
     //2
     public void increaseSalesCount(Product product) {
         product.setSalesCount(product.getSalesCount() + 1);
@@ -110,9 +114,30 @@ public class ProductService {
     }
 
 
+    public double applyDiscount(String merchantID, String productID, double discountPercentage) {
+        Product product = getProductById(productID);
+        if (product == null) {
+            return -1;
+        }
+
+        MerchantStock stock = merchantStockService.getStockByProductAndMerchant(merchantID, productID);
+        if (stock == null) {
+            return -1;
+        }
+
+        if (!stock.getMerchantId().equals(merchantID)) {
+            return -1;
+        }
+
+        double originalPrice = product.getPrice();
+        double discountedPrice = originalPrice - (originalPrice * discountPercentage / 100);
 
 
+        product.setPrice(discountedPrice);
+        return discountedPrice;
     }
+
+}
 
 
 
