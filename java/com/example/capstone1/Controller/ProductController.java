@@ -90,6 +90,21 @@ public class ProductController {
         }
     }
 
+    //3
+      @GetMapping("/discount/{merchantID}/{productID}/{discountPercentage}")
+    public ResponseEntity<String> applyDiscount(@PathVariable String merchantID,
+                                                @PathVariable String productID,
+                                                @PathVariable double discountPercentage) {
+
+        double discountedPrice = productService.applyDiscount(merchantID, productID, discountPercentage);
+
+        if (discountedPrice == -1) {
+            return ResponseEntity.status(400).body("Discount cannot be applied: Either the product or merchant does not exist.");
+        }
+
+        return ResponseEntity.status(200).body("Discount applied successfully! New price: " + discountedPrice);
+    }
+
 
 
 
