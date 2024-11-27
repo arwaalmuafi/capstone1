@@ -113,7 +113,7 @@ public class ProductService {
         return bestSellingProduct;
     }
 
-
+//3
     public double applyDiscount(String merchantID, String productID, double discountPercentage) {
         Product product = getProductById(productID);
         if (product == null) {
