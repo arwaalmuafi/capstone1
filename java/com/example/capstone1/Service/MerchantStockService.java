@@ -61,6 +61,15 @@ public class MerchantStockService {
         return false;
     }
 
+     public MerchantStock getStockByProductAndMerchant(String merchantID, String productID) {
+        for (MerchantStock stock :merchantStocks) {
+            if (stock.getMerchantId().equals(merchantID) && stock.getProductId().equals(productID)) {
+                return stock;
+            }
+        }
+        return null;
+    }
+
 
 
 
